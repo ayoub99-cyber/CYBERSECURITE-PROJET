@@ -21,6 +21,7 @@ def main():
             print(f"- {i} non actif")
     else:
         print("\nTous les services critiques sont conformes.")
+    elif result.returncode != 0:
+        print("Erreur lors de l'exécution de la commande:", result.stderr)  
+    
 
-if __name__ == "__main__":
-    main()

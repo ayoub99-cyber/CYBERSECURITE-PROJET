@@ -15,7 +15,9 @@ def main():
     critical = ['ssh.service', 'nginx.service', 'mysql.service']
     issues = [c for c in critical if c not in running]
 
-    if issues:
+    if result.returncode != 0:
+        print("Erreur lors de l'exécution de la commande:", result.stderr)
+    elif issues:
         print("\nProblèmes de conformité:")
         for i in issues:
             print(f"- {i} non actif")

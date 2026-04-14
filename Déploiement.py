@@ -14,3 +14,17 @@ def main():
 #Résultat du script de déploiement
 print("Script de déploiement terminé. Veuillez vérifier les résultats ci-dessus pour les services actifs et les problèmes de conformité.")
 if __name__ == "__main__":    main()    
+# afichage des logs et des messages sur Windows 
+def afficher_logs_windows():
+    print("Affichage des logs pour Windows...")
+    # Exemple de commande pour afficher les logs d'un service spécifique (ex: sshd)
+    subprocess.run(['powershell', '-Command', 'Get-EventLog -LogName Application -Source sshd -Newest 10'], check=True) 
+# afichage des logs et des messages sur Linux
+def afficher_logs_linux():
+    print("Affichage des logs pour Linux...")
+    # Exemple de commande pour afficher les logs d'un service spécifique (ex: ssh)
+    subprocess.run(['journalctl', '-u', 'ssh.service', '-n', '10'], check=True)
+result = input("Souhaitez-vous afficher les logs pour Windows(1) ou Linux(2) ? (1/2)")
+if result == "1":   afficher_logs_windows()
+elif result == "2":   afficher_logs_linux()
+else:   print("Choix invalide Veuilliez Réssayez .")
