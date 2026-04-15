@@ -13,7 +13,7 @@ def main():
         print(f"- {s}")
 
     # Services critiques (noms d'affichage)
-    critical = ['Windows Update', 'Microsoft Defender Antivirus Service', 'Windows Event Log']
+    critical = ['Windows Update', 'Microsoft Defender Antivirus Service', 'Journal d’événements Windows']
     issues = [c for c in critical if c not in running]
 
     if issues:
