@@ -25,7 +25,7 @@ def main():
     else:
         print("\nTous les services critiques sont conformes.")
      # Array filtré des services critiques pour Windows
-    services_critiques_windows = ['Windows Update', 'Microsoft Defender Antivirus Service', 'Windows Event Log']
+    services_critiques_windows = ['Windows Update','Pare-feu Windows Defender', 'Service antivirus Microsoft Defender', 'Journal d’événements Windows'] 
     print("\nServices critiques pour Windows:")
     filter = [s for s in running if s in services_critiques_windows]
     for s in filter:

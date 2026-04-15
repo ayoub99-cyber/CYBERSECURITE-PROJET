@@ -35,4 +35,6 @@ def main():
     print("\nServices actifs pour Linux:")  
     for s in services_actifs_linux:
         print(f"- {s}")
+if __name__ == "__main__":    
+    main()
     
