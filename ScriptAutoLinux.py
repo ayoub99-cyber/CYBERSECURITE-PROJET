@@ -19,7 +19,7 @@ def main():
         print("Services actifs:")
         for s in running:
             print(f"- {s}")
-
+    
     # Services critiques (noms d'affichage)
     critical = ['ssh.service', 'nginx.service', 'mysql.service']
     issues = [c for c in critical if c not in running]
