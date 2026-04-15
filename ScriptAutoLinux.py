@@ -14,7 +14,7 @@ def main():
         if len(parts) > 0:
             # On récupère le nom du service (ex: cron.service)
             running.append(parts[0])
-
+    
     print(f"Services détectés : {len(running)}")
         print("Services actifs:")
         for s in running:
