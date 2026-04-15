@@ -1,7 +1,7 @@
 # DEPLOIEMENT D'UN SCRIPT PYTHON POUR AUTOMATISER L'INVENTAIRE DES SERVICES ACTIFS ET LA VERIFICATION DE LA CONFORMITE.
 
 import subprocess
-
+from unittest import result
 def main():
     # Récupérer les services actifs
     result = subprocess.run(['systemctl', 'list-units', '--type=service', '--state=running'], capture_output=True, text=True)
@@ -35,3 +35,4 @@ def main():
     print("\nServices actifs pour Linux:")  
     for s in services_actifs_linux:
         print(f"- {s}")
+    
