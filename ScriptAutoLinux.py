@@ -4,12 +4,21 @@ import subprocess
 from unittest import result
 def main():
     # Récupérer les services actifs
-    result = subprocess.run(['systemctl', 'list-units', '--type=service', '--state=running'], capture_output=True, text=True)
-    running = [line.split()[0] for line in result.stdout.split('\n') if line.endswith('running')]
+    #result = subprocess.run(['systemctl', 'list-units', '--type=service', '--state=running'], capture_output=True, text=True)
+    #running = [line.split()[0] for line in result.stdout.split('\n') if line.endswith('running')]
+    result = subprocess.run( ['systemctl', 'list-units', '--type=service', '--state=running', '--no-legend'], capture_output=True,  text=True)
+    # On filtre les lignes vides et on récupère le premier élément (UNIT)
+    running = []
+    for line in result.stdout.split('\n'):
+        parts = line.split()
+        if len(parts) > 0:
+            # On récupère le nom du service (ex: cron.service)
+            running.append(parts[0])
 
-    print("Services actifs:")
-    for s in running:
-        print(f"- {s}")
+    print(f"Services détectés : {len(running)}")
+        print("Services actifs:")
+        for s in running:
+            print(f"- {s}")
 
     # Services critiques (noms d'affichage)
     critical = ['ssh.service', 'nginx.service', 'mysql.service']
