@@ -23,3 +23,15 @@ def main():
             print(f"- {i} non actif")
     else:
         print("\nTous les services critiques sont conformes.")
+
+    # Array filtré des services critiques pour Linux
+    services_critiques_linux = ['ssh.service', 'nginx.service', 'mysql.service']
+    print("\nServices critiques pour Linux:")
+    filter = [s for s in running if s in services_critiques_linux]
+    for s in filter:
+        print(f"- {s}")
+    # Array filtré les services actifs pour Linux
+    services_actifs_linux = [s for s in running if s in services_critiques_linux]
+    print("\nServices actifs pour Linux:")  
+    for s in services_actifs_linux:
+        print(f"- {s}")

@@ -28,3 +28,6 @@ result = input("Souhaitez-vous afficher les logs pour Windows(1) ou Linux(2) ? (
 if result == "1":   afficher_logs_windows()
 elif result == "2":   afficher_logs_linux()
 else:   print("Choix invalide Veuilliez Réssayez .")
+   # Array de services critiques pour les deux systèmes
+services_critiques_windows = ['Windows Update', 'Microsoft Defender Antivirus Service', 'Windows Event Log']
+services_critiques_linux = ['ssh.service', 'nginx.service', 'mysql.service']
