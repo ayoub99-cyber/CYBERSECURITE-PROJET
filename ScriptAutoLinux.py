@@ -1,10 +1,10 @@
 # DEPLOIEMENT D'UN SCRIPT PYTHON POUR AUTOMATISER L'INVENTAIRE DES SERVICES ACTIFS ET LA VERIFICATION DE LA CONFORMITE.
 
-import process
+import subprocess
 
 def main():
     # Récupérer les services actifs
-    result = process.run(['systemctl', 'list-units', '--type=service', '--state=running'], capture_output=True, text=True)
+    result = subprocess.run(['systemctl', 'list-units', '--type=service', '--state=running'], capture_output=True, text=True)
     running = [line.split()[0] for line in result.stdout.split('\n') if line.endswith('running')]
 
     print("Services actifs:")
