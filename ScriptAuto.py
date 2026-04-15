@@ -36,6 +36,9 @@ def main():
     for s in services_actifs_windows:
         print(f"- {s}")
 
+if __name__ == "__main__":    main()  
+        
+
 
 
 
