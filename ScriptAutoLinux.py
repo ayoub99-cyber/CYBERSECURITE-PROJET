@@ -50,3 +50,17 @@ def main():
 
 if __name__ == "__main__":
     main()
+    #récupation des log a partir des Arrays filtrés des services critiques et actifs pour Linux
+array_services_critiques_linux = ['ssh.service', 'nginx.service', 'mariadb.service']
+array_services_actifs_linux = ['ssh.service', 'nginx.service']
+print("\nRécupération des logs pour les services critiques et actifs:")
+for service in array_services_critiques_linux:
+    if service in array_services_actifs_linux:
+        print(f"Récupération des logs pour {service}...")
+        result = subprocess.run(['journalctl', '-u', service, '--since', '1 hour ago'], capture_output=True, text=True)
+        if result.returncode == 0:
+            print(f"Logs pour {service}:\n{result.stdout}")
+        else:
+            print(f"Erreur lors de la récupération des logs pour {service}: {result.stderr}")
+    else:
+        print(f"{service} n'est pas actif, pas de logs à récupérer.")   

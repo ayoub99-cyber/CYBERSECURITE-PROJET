@@ -37,6 +37,15 @@ def main():
         print(f"- {s}")
 
 if __name__ == "__main__":    main()  
+    #récupation des log a partir des Arrays filtrés des services critiques et actifs pour Windows
+array_services_critiques_windows = ['Windows Update','Pare-feu Windows Defender', 'Service antivirus Microsoft Defender', 'Journal d’événements Windows']
+array_services_actifs_windows = ['Windows Update','Pare-feu Windows Defender', 'Service antivirus Microsoft Defender']
+print("\nRécupération des logs pour les services critiques et actifs:")
+for service in array_services_critiques_windows:
+    if service in array_services_actifs_windows:
+        print(f"Récupération des logs pour {service}...")
+        result = subprocess.run(['wevtutil', 'qe', service, '/q:"*[System[TimeCreated[timediff(@SystemTime) <= 3600000]]]"', '/f:text'], capture_output=True, text=True)
+        print(result.stdout)
         
 
 
