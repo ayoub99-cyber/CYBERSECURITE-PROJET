@@ -12,7 +12,7 @@ def main():
         print(f"- {s}")
 
     # Services critiques (noms d'affichage)
-    critical = ['ssh.service', 'nginx.service', 'mysql.service']
+    critical = ['ssh.service', 'nginx.service', 'mariadb.service']
     issues = [c for c in critical if c not in running]
 
     if result.returncode != 0:
@@ -25,7 +25,7 @@ def main():
         print("\nTous les services critiques sont conformes.")
 
     # Array filtré des services critiques pour Linux
-    services_critiques_linux = ['ssh.service', 'nginx.service', 'mysql.service']
+    services_critiques_linux = ['ssh.service', 'nginx.service', 'mariadb.service']
     print("\nServices critiques pour Linux:")
     filter = [s for s in running if s in services_critiques_linux]
     for s in filter:
