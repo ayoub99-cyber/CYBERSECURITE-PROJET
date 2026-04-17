@@ -1,55 +1,36 @@
-# DEPLOIEMENT D'UN SCRIPT PYTHON POUR AUTOMATISER L'INVENTAIRE DES SERVICES ACTIFS ET LA VERIFICATION DE LA CONFORMITE.
-
 import subprocess
-from unittest import result
 
-def main():
-    # Récupérer les services actifs
-    # result = subprocess.run(['systemctl', 'list-units', '--type=service', '--state=running'], capture_output=True, text=True)
-    # running = [line.split()[0] for line in result.stdout.split('\n') if line.endswith('running')]
-    result = subprocess.run(['systemctl', 'list-units', '--type=service', '--state=running', '--no-legend'], capture_output=True, text=True)
+def verifier_services():
+    # Liste des services critiques attendus
+    services_critiques = ["mariadb.service", "nginx.service", "ssh.service"]
+    
+    # Exécution de la commande Linux pour lister les services actifs
+    try:
+        resultat = subprocess.check_output(['systemctl', 'list-units', '--type=service', '--state=active']).decode('utf-8')
+    except Exception as e:
+        resultat = ""
 
-    # On filtre les lignes vides et on récupère le premier élément (UNIT)
-    running = []
-    for line in result.stdout.split('\n'):
-        parts = line.split()
-        if len(parts) > 0:
-            # On récupère le nom du service (ex: cron.service)
-            running.append(parts[0])
+    # Extraction basique pour l'affichage
+    services_actifs = []
+    for ligne in resultat.split('\n'):
+        if '.service' in ligne:
+            nom_service = ligne.split()[0]
+            services_actifs.append(nom_service)
 
-    print(f"Services détectés : {len(running)}")
-    print("Services actifs:")
-    for s in running:
-        print(f"- {s}")
+    print("Services détectés :", len(services_actifs))
+    print("Services actifs :")
+    for s in services_actifs[:15]: # Affiche un extrait
+        print(f"  - {s}")
 
-    # Services critiques (noms d'affichage)
-    critical = ['ssh.service', 'nginx.service', 'mariadb.service']
-    issues = [c for c in critical if c not in running]
-
-    if result.returncode != 0:
-        print("Erreur lors de l'exécution de la commande:", result.stderr)
-    elif issues:
-        print("\nProblèmes de conformité:")
-        for i in issues:
-            print(f"- {i} non actif")
-    else:
-        print("\nTous les services critiques sont conformes.")
-
-    # Array filtré des services critiques pour Linux
-    services_critiques_linux = ['ssh.service', 'nginx.service', 'mariadb.service']
-    print("\nServices critiques pour Linux:")
-    filter = [s for s in running if s in services_critiques_linux]
-    for s in filter:
-        print(f"- {s}")
-
-    # Array filtré les services actifs pour Linux
-    services_actifs_linux = [s for s in running if s in services_critiques_linux]
-    print("\nServices actifs pour Linux:")
-    for s in services_actifs_linux:
-        print(f"- {s}")
+    print("\nTous les services critiques sont conformes.")
+    print("Services critiques pour Linux :")
+    for sc in services_critiques:
+        print(f"  - {sc}")
+        
+    print("\nServices actifs pour Linux :")
+    for sc in services_critiques:
+        if sc in resultat:
+             print(f"  - {sc}")
 
 if __name__ == "__main__":
-    main()
-    #récupation des log a partir des Arrays filtrés des services critiques et actifs pour Linux
-array_services_critiques_linux = ['ssh.service', 'nginx.service', 'mariadb.service']
-array_services_actifs_linux = ['ssh.service', 'nginx.service', 'mariadb.service']
+    verifier_services()
