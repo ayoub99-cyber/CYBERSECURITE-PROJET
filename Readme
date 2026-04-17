@@ -1,0 +1,47 @@
+# 🛡️ Projet AEGIS - Sécurisation SI & Audit Automatisé
+
+**Réalisé par :** Yannis (Rôle : Administrateur Système)  
+**Projet de groupe :** AEGIS (avec Enzo, Ayoub et Sara)  
+
+## 🎯 Mon périmètre d'intervention
+Dans le cadre de la reprise en main de l'infrastructure de TechSud (serveur Ubuntu 24.04 LTS compromis), j'ai été en charge du durcissement complet du système d'exploitation (Hardening) en ligne de commande, ainsi que du développement d'un outil d'audit automatisé en Python.
+
+---
+
+## 🛠️ 1. Journal d'intervention et Durcissement (Hardening)
+Voici les actions techniques approfondies que j'ai réalisées directement sur le serveur :
+
+### A. Sécurisation des accès (SSH)
+* **Génération de clés cryptographiques :** Création d'une paire de clés robustes `ed25519` sur la machine hôte.
+* **Transfert sécurisé :** Export de la clé publique via `scp` vers le serveur.
+* **Durcissement de `/etc/ssh/sshd_config` :**
+  * Changement du port d'écoute (du port `22` vers le port `2224`).
+  * Désactivation stricte de la connexion par mot de passe (`PasswordAuthentication no`).
+  * Interdiction formelle de la connexion en tant que super-administrateur (`PermitRootLogin no`).
+* **Application :** Redémarrage du daemon via `systemctl restart ssh.socket`.
+
+### B. Filtrage et Défense Active
+* **Pare-feu (UFW) :** Configuration d'une politique de blocage total en entrée (*Deny Incoming*), avec une règle d'exception stricte pour notre port SSH 2224.
+* **Fail2ban :** Installation et activation du service pour analyser les logs d'authentification et bannir les IP malveillantes (protection anti-bruteforce).
+
+### C. Gestion des utilisateurs (Moindre Privilège)
+* Création de comptes utilisateurs standards via `adduser`.
+* Vérification de l'isolation des droits : test de la commande `sudo` par l'utilisateur standard pour prouver le blocage (message d'erreur : *is not in the sudoers file*).
+
+---
+
+## 🐍 2. Automatisation de l'Audit (Python)
+Pour garantir le Maintien en Condition de Sécurité (MCS) et prouver la conformité du serveur, j'ai développé le script **`audit_aegis.py`**.
+
+**Fonctionnalités du script :**
+* **Gestion des dépendances :** Installation des paquets système requis (`nmap`, `python3-pip`, `python-nmap`).
+* **Vérification des processus (`subprocess`) :** Le script exécute des commandes shell en arrière-plan (`ufw status`, `systemctl is-active fail2ban`) pour s'assurer que les défenses ne sont pas tombées.
+* **Scan réseau (`nmap`) :** Scan silencieux sur la boucle locale (`127.0.0.1`) sur les 3000 premiers ports pour détecter l'ouverture non autorisée de nouveaux services.
+* **Formatage des données :** Export automatique du rapport d'état au format **JSON** (`audit_result.json`).
+
+---
+
+## 📂 Contenu de ma partie
+* `audit_aegis.py` : Mon script Python d'audit système.
+* `audit_result.json` : La preuve de conformité générée par mon script sur le serveur de production.
+* `AEGIS_Presentation.pdf` : Le support de présentation global de l'équipe pour la soutenance.
